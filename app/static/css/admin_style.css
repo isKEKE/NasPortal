@@ -1,0 +1,198 @@
+body.admin-page {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans SC', sans-serif;
+    background-image: url('../img/admin-background.jpg'); /* Replace with your background image */
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    color: #f8f9fa;
+    display: flex; /* Use flexbox for the main layout */
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    background-color: rgba(40, 40, 50, 0.6);
+    backdrop-filter: blur(15px) saturate(120%);
+    -webkit-backdrop-filter: blur(15px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f8f9fa;
+    width: 180px; /* Adjust sidebar width as needed */
+    min-height: 100vh; /* Make it span the full viewport height */
+    border-radius: 0; /* No rounded corners for the full height sidebar */
+    padding: 1rem 0; /* Adjust vertical padding */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Make navigation links take full width */
+}
+
+.admin-sidebar h3 {
+    font-size: 1.1rem;
+    margin: 1rem 1rem 0.5rem 1rem; /* Add some spacing */
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: left;
+}
+
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+.admin-nav-link {
+    color: #f8f9fa;
+    padding: 0.75rem 1.2rem;
+    text-decoration: none;
+    border-radius: 0; /* No rounded corners for nav links */
+    margin-bottom: 0; /* Remove bottom margin between links */
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: left;
+}
+
+.admin-nav-link i {
+    margin-right: 0.75rem;
+}
+
+.admin-nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.admin-nav-link.active {
+    background-color: #007bff; /* Adjust accent color */
+    color: white;
+}
+
+.admin-nav-link.active:hover {
+    background-color: #0056b3;
+}
+
+.admin-main-container {
+    display: flex; /* Still using flexbox for overall layout */
+    flex-grow: 1; /* Content takes remaining width */
+}
+
+.admin-content {
+    flex-grow: 1; /* Content area expands */
+    padding: 1rem;
+}
+
+.admin-header {
+    background-color: rgba(40, 40, 50, 0.6);
+    backdrop-filter: blur(15px) saturate(120%);
+    -webkit-backdrop-filter: blur(15px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.admin-logo-area {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.admin-logo-area i {
+    margin-right: 0.5rem;
+}
+
+.admin-user-info {
+    display: flex;
+    align-items: center;
+}
+
+.admin-username {
+    margin-right: 1rem;
+    font-size: 0.9rem;
+}
+
+.admin-logout-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.admin-logout-button:hover {
+    background-color: #c82333;
+}
+
+.admin-dashboard {
+    background-color: rgba(40, 40, 50, 0.6);
+    backdrop-filter: blur(15px) saturate(120%);
+    -webkit-backdrop-filter: blur(15px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f8f9fa;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.admin-dashboard h2 {
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 0.75rem;
+}
+
+.admin-footer {
+    background-color: rgba(40, 40, 50, 0.6);
+    backdrop-filter: blur(15px) saturate(120%);
+    -webkit-backdrop-filter: blur(15px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    margin-top: auto; /* Push to the bottom if content is short */
+}
+
+/* Responsive adjustments (adjust as needed) */
+@media (max-width: 768px) {
+    body.admin-page {
+        flex-direction: column; /* Stack sidebar and content on smaller screens */
+    }
+
+    .admin-sidebar {
+        width: 100%;
+        min-height: auto;
+        flex-direction: row; /* Display navigation horizontally */
+        overflow-x: auto;
+        border-radius: 0;
+        padding-bottom: 0.5rem;
+    }
+
+    .admin-nav {
+        flex-direction: row;
+    }
+
+    .admin-nav-link {
+        margin-right: 0.5rem;
+        margin-bottom: 0;
+        white-space: nowrap;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .admin-main-container {
+        flex-direction: column; /* Stack content below sidebar */
+    }
+
+    .admin-content {
+        border-radius: 0;
+    }
+}

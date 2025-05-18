@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/admin_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body.admin-page {
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+
+        .data-container {
+            padding: 1rem;
+            margin-top: 1rem;
+            background-color: rgba(40, 40, 50, 0.6);
+            backdrop-filter: blur(15px) saturate(120%);
+            -webkit-backdrop-filter: blur(15px) saturate(120%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #f8f9fa;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+
+        .data-table th, .data-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table th {
+            font-weight: bold;
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .loading-message {
+            text-align: center;
+            font-style: italic;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body class="admin-page">
+
+    <div class="admin-sidebar">
+        <h3><i class="fas fa-bars"></i> Navigation</h3>
+        <nav class="admin-nav">
+            <a href="/admin/dashboard" class="admin-nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="#" class="admin-nav-link" onclick="loadUsers()"><i class="fas fa-users"></i> User Management</a>
+            <a href="#" class="admin-nav-link" onclick="loadWebsites()"><i class="fas fa-link"></i> Website Management</a>
+            <a href="/" class="admin-nav-link"><i class="fas fa-home"></i> Back to Home</a>
+            <a href="/auth/logout" class="admin-nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </div>
+
+    <div class="admin-main-container">
+        <main class="admin-content">
+            <div id="user-data" class="data-container frosted-glass-admin" style="display: none;">
+                <h2><i class="fas fa-users"></i> User List</h2>
+                <div id="user-list-container">
+                    <p class="loading-message">Loading users...</p>
+                </div>
+            </div>
+
+            <div id="website-data" class="data-container frosted-glass-admin" style="display: none;">
+                <h2><i class="fas fa-link"></i> Website List</h2>
+                <div id="website-list-container">
+                    <p class="loading-message">Loading websites...</p>
+                </div>
+            </div>
+
+            <div id="dashboard-content" class="frosted-glass-admin">
+                <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                <p>This is the admin dashboard. You can see an overview of your system here.</p>
+                </div>
+        </main>
+
+        <footer class="admin-footer">
+            Copyright &copy; 2020 - {% block current_year %}2025{% endblock %} Your Name/Site & Made by You
+        </footer>
+    </div>
+
+    <script>
+        async function loadUsers() {
+            document.getElementById('dashboard-content').style.display = 'none';
+            document.getElementById('website-data').style.display = 'none';
+            document.getElementById('user-data').style.display = 'block';
+            document.getElementById('user-list-container').innerHTML = '<p class="loading-message">Loading users...</p>';
+
+            try {
+                const response = await fetch('/admin/user/list');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const users = await response.json();
+                displayUsers(users);
+            } catch (error) {
+                document.getElementById('user-list-container').innerHTML = `<p class="error-message">Error loading users: ${error}</p>`;
+            }
+        }
+
+        function displayUsers(users) {
+            let html = '<table class="data-table"><thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Created At</th></tr></thead><tbody>';
+            if (users && users.length > 0) {
+                users.forEach(user => {
+                    html += `<tr><td>${user.id}</td><td>${user.username}</td><td>${user.email}</td><td>${user.created_at}</td></tr>`;
+                });
+            } else {
+                html += '<tr><td colspan="4">No users found.</td></tr>';
+            }
+            html += '</tbody></table>';
+            document.getElementById('user-list-container').innerHTML = html;
+        }
+
+        async function loadWebsites() {
+            document.getElementById('dashboard-content').style.display = 'none';
+            document.getElementById('user-data').style.display = 'none';
+            document.getElementById('website-data').style.display = 'block';
+            document.getElementById('website-list-container').innerHTML = '<p class="loading-message">Loading websites...</p>';
+
+            try {
+                const response = await fetch('/admin/website/list');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const websites = await response.json();
+                displayWebsites(websites);
+            } catch (error) {
+                document.getElementById('website-list-container').innerHTML = `<p class="error-message">Error loading websites: ${error}</p>`;
+            }
+        }
+
+        function displayWebsites(websites) {
+            let html = '<table class="data-table"><thead><tr><th>ID</th><th>Title</th><th>URL</th><th>Description</th></tr></thead><tbody>';
+            if (websites && websites.length > 0) {
+                websites.forEach(website => {
+                    html += `<tr><td>${website.id}</td><td>${website.title}</td><td><a href="${website.url}" target="_blank">${website.url}</a></td><td>${website.description || ''}</td></tr>`;
+                });
+            } else {
+                html += '<tr><td colspan="4">No websites found.</td></tr>';
+            }
+            html += '</tbody></table>';

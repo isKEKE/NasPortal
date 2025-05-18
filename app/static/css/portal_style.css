@@ -1,0 +1,256 @@
+/* Basic Reset & Body Styling */
+body.portal-page {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Or choose a nice font */
+    background-image: url('../img/portal-background.jpg'); /* --- UPDATE PATH HERE --- */
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed; /* Keep background fixed during scroll */
+    color: #ffffff; /* Default text color - white */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    backdrop-filter: blur(2px); /* Optional: Slight blur on the very background */
+    -webkit-backdrop-filter: blur(2px);
+}
+
+/* Frosted Glass Effect Mixin/Helper Class */
+.frosted-glass {
+    background-color: rgba(40, 40, 50, 0.6); /* Dark semi-transparent background */
+    backdrop-filter: blur(15px) saturate(120%);
+    -webkit-backdrop-filter: blur(15px) saturate(120%); /* Blur effect */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    padding: 20px;
+}
+
+/* Main Content Container */
+.portal-main-container {
+    max-width: 1100px; /* Max width of centered content */
+    width: 90%; /* Responsive width */
+    margin: auto; /* Center the container */
+    padding: 2rem 0; /* Add some top/bottom padding */
+    flex-grow: 1; /* Allow container to grow and push footer down */
+}
+
+/* Header/Top Section (Clock, Date, Weather - Static Placeholders) */
+.portal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to the top */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 20px; /* Space between elements */
+    margin-bottom: 2rem;
+}
+
+.portal-logo-area {
+    /* Style your logo if you have one */
+    font-size: 2.5rem;
+    font-weight: bold;
+    /* Example: */
+    /* background: url('../img/logo.png') no-repeat left center; */
+    /* background-size: contain; */
+    /* padding-left: 60px; */ /* Space for logo */
+    /* min-height: 50px; */
+    /* display: flex; */
+    /* align-items: center; */
+}
+
+
+.portal-datetime-weather {
+    text-align: right;
+}
+
+.portal-datetime-weather .time {
+    font-size: 2.5rem;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.2em;
+    letter-spacing: 1px;
+}
+
+.portal-datetime-weather .date,
+.portal-datetime-weather .weather {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    display: block;
+}
+
+/* Main Content Grid (Info + Links) */
+.portal-content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
+    gap: 20px;
+    margin-bottom: 2rem;
+}
+
+/* Info Box */
+.portal-info-box {
+    /* Inherits .frosted-glass */
+    grid-column: span 1; /* Take one column */
+}
+
+.portal-info-box h3 {
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 0.5rem;
+}
+
+.portal-info-box p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    margin-bottom: 1.5rem; /* Space before social links */
+}
+
+.portal-social-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.3rem; /* Icon size */
+    margin-right: 15px; /* Space between icons */
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.portal-social-links a:hover {
+    opacity: 1;
+}
+
+/* Links Grid Area */
+.portal-links-area {
+    /* Inherits .frosted-glass */
+    grid-column: span 2; /* Take two columns, adjust as needed */
+}
+
+.portal-links-area h3 {
+     font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 0.5rem;
+}
+
+.portal-links-grid {
+    display: grid;
+    /* Adjust minmax for desired card size, auto-fit for responsiveness */
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 15px; /* Space between link cards */
+}
+
+/* Individual Link Cards */
+.portal-link-card {
+    background-color: rgba(60, 60, 70, 0.7); /* Slightly different background */
+    backdrop-filter: blur(5px);
+     -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    display: flex; /* Use flexbox for alignment */
+    flex-direction: column; /* Stack icon/title vertically */
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    min-height: 80px; /* Ensure cards have some height */
+    overflow: hidden; /* Hide overflow */
+}
+
+.portal-link-card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    background-color: rgba(80, 80, 90, 0.8);
+}
+
+.portal-link-card i { /* Assuming Font Awesome icons */
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+.portal-link-card span {
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: block; /* Ensure it takes its own line */
+     white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis for long text */
+    max-width: 100%; /* Ensure it doesn't overflow card padding */
+}
+
+
+/* Quote Section */
+.portal-quote {
+     /* Inherits .frosted-glass */
+    text-align: center;
+    font-style: italic;
+    opacity: 0.9;
+    margin-bottom: 2rem; /* Space before footer */
+}
+
+.portal-quote p {
+    margin-bottom: 0.3em;
+}
+
+.portal-quote footer {
+    font-style: normal;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+
+/* Footer */
+.portal-footer {
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7); /* Slightly dimmer text */
+    margin-top: auto; /* Push footer to bottom if content is short */
+     background-color: rgba(0, 0, 0, 0.2); /* Optional footer background */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .portal-main-container {
+        width: 95%;
+    }
+
+    .portal-header {
+        flex-direction: column; /* Stack logo and date/time */
+        align-items: center; /* Center items */
+        text-align: center;
+    }
+
+    .portal-datetime-weather {
+         text-align: center;
+         margin-top: 1rem;
+    }
+
+    .portal-datetime-weather .time {
+        font-size: 2rem;
+    }
+
+     .portal-content-grid {
+        grid-template-columns: 1fr; /* Stack info box and links area */
+    }
+
+    .portal-info-box, .portal-links-area {
+        grid-column: span 1; /* Reset column span */
+    }
+
+    .portal-links-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Smaller cards on mobile */
+        gap: 10px;
+    }
+
+    .portal-link-card i {
+        font-size: 1.5rem;
+    }
+     .portal-link-card span {
+        font-size: 0.8rem;
+    }
+}
