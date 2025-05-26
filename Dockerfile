@@ -11,10 +11,10 @@ COPY requirements.txt ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./project /project/app
+COPY ./app /project/app
 
 COPY ./run.py /project/run.py
 
 EXPOSE 8000
 
-CMD "python run.py runprd"
+CMD ["python", "run.py", "runprd"]

@@ -11,9 +11,9 @@ services:
     ports:
       - 8000:8000
     restart: 'unless-stopped'
-    volumn:
-      - .env:.env
+    volumes:
+      - ${PWD}/.env:/project/.env
       
     networks:
       public-network:
-        ipv4_address: 172.33.0.11
+        ipv4_address: ${PORTAL_HOST}
