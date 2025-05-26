@@ -1,0 +1,19 @@
+version: "3.8"
+
+networks:
+  public-network:
+    external: true
+
+services:
+  jellyfin:
+    image: keke/nas-portal
+    container_name: portal
+    ports:
+      - 8000:8000
+    restart: 'unless-stopped'
+    volumn:
+      - .env:.env
+      
+    networks:
+      public-network:
+        ipv4_address: 172.33.0.11

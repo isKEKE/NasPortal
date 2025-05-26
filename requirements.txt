@@ -11,3 +11,4 @@ alembic # For database migrations (recommended but not shown in code)
 pydantic[email] # For email validation if needed in schemas
 typer[all]
 psycopg2
+gunicorn

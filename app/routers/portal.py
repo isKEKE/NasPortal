@@ -12,6 +12,7 @@ from app.schemas.user import User # 用于类型提示
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
+
 @router.get("/", response_class=HTMLResponse)
 async def read_portal(
     request: Request,
@@ -20,7 +21,7 @@ async def read_portal(
 ):
     if current_user:
         # 已登录，获取所有网站
-        websites = crud_website.get_websites(db)
+        websites = crud_website.get_websites_by_user(db, user_id=current_user.id)
     else:
         # 未登录，只获取公开网站
         websites = crud_website.get_public_websites(db)

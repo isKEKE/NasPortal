@@ -1,11 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', path='/css/admin_style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
@@ -50,6 +50,268 @@
             font-style: italic;
             opacity: 0.8;
         }
+
+        .action-buttons button {
+            margin-right: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .action-buttons button:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        .edit-button {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .edit-button:hover {
+             background-color: #0056b3;
+        }
+
+        .delete-button {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+
+        /* Styles for Add User/Website Button */
+        .add-item-button {
+            background-color: #08a365;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-left: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-item-button:hover {
+            background-color: #067d4e;
+            transform: translateY(-2px) scale(1.1);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: rgba(40, 40, 50, 0.8);
+            color: #ffffff;
+            margin: 15% auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #ffffff;
+        }
+
+        .close-button {
+            color: #ffffff;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            opacity: 0.8;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #ffffff;
+            text-decoration: none;
+            opacity: 1;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group textarea, /* Added textarea for description */
+        .form-group select { /* Added select for styling */
+            width: calc(100% - 2rem);
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+
+         .form-group textarea {
+             min-height: 100px; /* Give description more space */
+             resize: vertical; /* Allow vertical resizing */
+         }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="password"]:focus,
+        .form-group textarea:focus,
+        .form-group select:focus { /* Added select for focus style */
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group input[type="text"]::placeholder,
+        .form-group input[type="password"]::placeholder,
+        .form-group textarea::placeholder {
+            color: #ffffff;
+            opacity: 0.6;
+        }
+
+        /* Select specific styling for custom arrow */
+        .form-group select {
+             -webkit-appearance: none;
+             -moz-appearance: none;
+             appearance: none;
+             background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20448%22%20enable-background%3D%22new%200%200%20256%20448%22%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E.arrow%7Bfill%3A%23ffffff%3B%7D%3C%2Fstyle%3E%3Cpath%20class%3D%22arrow%22%20d%3D%22M255.9%20168c0-4.2-1.6-7.9-4.8-11.2-3.2-3.5-6.9-5.2-11.2-5.2H16.1c-4.2%200-7.9%201.8-11.1%205.2-3.2%203.3-4.8%207.1-4.8%2011.2s1.6%207.9%204.8%2011.1l112%20112c3.1%203.1%206.8%204.7%2011.1%204.7%204.2%200%207.9-1.6%2011.1-4.7l112-112c3.2-3.2%204.8-6.9%204.8-11.1z%22%2F%3E%3C%2Fsvg%3E');
+             background-repeat: no-repeat;
+             background-position: right 1rem top 50%;
+             background-size: 0.65em auto;
+        }
+
+        .form-group select option {
+            background-color: rgba(40, 40, 50, 0.9); /* Dark background for options */
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+        }
+
+
+        .form-actions button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-right: 0.5rem;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-actions button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+        }
+
+        .submit-button {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        .cancel-button {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .cancel-button:hover {
+            background-color: #5a6268;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-weight: bold;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            border-radius: 6px;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+          #edit_is_active {
+              width: calc(100% - 2rem);
+              padding: 0.75rem;
+              border: 1px solid rgba(255, 255, 255, 0.3);
+              border-radius: 6px;
+              box-sizing: border-box;
+              font-size: 1rem;
+              transition: border-color 0.2s ease, background-color 0.2s ease;
+              background-color: rgba(255, 255, 255, 0.05);
+              color: #ffffff;
+              -webkit-appearance: none; /* Remove default arrow */
+              -moz-appearance: none;
+              appearance: none;
+              background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20448%22%20enable-background%3D%22new%200%200%20256%20448%22%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E.arrow%7Bfill%3A%23ffffff%3B%7D%3C%2Fstyle%3E%3Cpath%20class%3D%22arrow%22%20d%3D%22M255.9%20168c0-4.2-1.6-7.9-4.8-11.2-3.2-3.5-6.9-5.2-11.2-5.2H16.1c-4.2%200-7.9%201.8-11.1%205.2-3.2%203.3-4.8%207.1-4.8%2011.2s1.6%207.9%204.8%2011.1l112%20112c3.1%203.1%206.8%204.7%2011.1%204.7%204.2%200%207.9-1.6%2011.1-4.7l112-112c3.2-3.2%204.8-6.9%204.8-11.1z%22%2F%3E%3C%2Fsvg%3E');
+              background-repeat: no-repeat;
+              background-position: right 1rem top 50%;
+              background-size: 0.65em auto;
+          }
+
+           #edit_is_active:focus {
+               outline: none;
+               border-color: #007bff;
+               box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+               background-color: rgba(255, 255, 255, 0.1);
+           }
+
     </style>
 </head>
 <body class="admin-page">
@@ -57,98 +319,187 @@
     <div class="admin-sidebar">
         <h3><i class="fas fa-bars"></i> Navigation</h3>
         <nav class="admin-nav">
-            <a href="/admin/dashboard" class="admin-nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="#" class="admin-nav-link" onclick="loadUsers()"><i class="fas fa-users"></i> User Management</a>
-            <a href="#" class="admin-nav-link" onclick="loadWebsites()"><i class="fas fa-link"></i> Website Management</a>
-            <a href="/" class="admin-nav-link"><i class="fas fa-home"></i> Back to Home</a>
+            {% if current_user.is_superuser %}
+                <a href="#" id="users-link" class="admin-nav-link" onclick="loadUsers()"><i class="fas fa-users"></i> Users</a>
+            {% endif %}
+            <a href="#" id="websites-link" class="admin-nav-link" onclick="loadWebsites()"><i class="fas fa-link"></i> Websites</a>
+            <a href="/" class="admin-nav-link"><i class="fas fa-home"></i>Go Home</a>
             <a href="/auth/logout" class="admin-nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </nav>
     </div>
 
     <div class="admin-main-container">
         <main class="admin-content">
-            <div id="user-data" class="data-container frosted-glass-admin" style="display: none;">
-                <h2><i class="fas fa-users"></i> User List</h2>
+            {% if current_user.is_superuser %}
+            <div id="user-data" class="data-container frosted-glass-admin">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <h2><i class="fas fa-users"></i> User List</h2>
+                           <button id="add-user-button" class="add-item-button" onclick="openAddUserModal()">+</button>
+
+                </div>
                 <div id="user-list-container">
                     <p class="loading-message">Loading users...</p>
                 </div>
             </div>
+            {% endif %}
 
             <div id="website-data" class="data-container frosted-glass-admin" style="display: none;">
-                <h2><i class="fas fa-link"></i> Website List</h2>
+                   <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <h2><i class="fas fa-link"></i> Website List</h2>
+                    <button id="add-website-button" class="add-item-button" onclick="openAddWebsiteModal()">+</button>
+                   </div>
                 <div id="website-list-container">
                     <p class="loading-message">Loading websites...</p>
                 </div>
             </div>
 
-            <div id="dashboard-content" class="frosted-glass-admin">
-                <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
-                <p>This is the admin dashboard. You can see an overview of your system here.</p>
-                </div>
+
         </main>
 
-        <footer class="admin-footer">
-            Copyright &copy; 2020 - {% block current_year %}2025{% endblock %} Your Name/Site & Made by You
-        </footer>
+        </div>
+
+    {% if current_user.is_superuser %}
+    <div id="addUserModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New User</h2>
+                <span class="close-button" onclick="closeAddUserModal()">&times;</span>
+            </div>
+            <form id="addUserForm" method="post" action="/admin/user/add">
+                <div class="form-group">
+                    <label for="new_username">Username:</label>
+                    <input type="text" id="new_username" name="username" required placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="new_password">Password:</label>
+                    <input type="password" id="new_password" name="password" required placeholder="Enter password">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-button">Add User</button>
+                    <button type="button" class="cancel-button" onclick="closeAddUserModal()">Cancel</button>
+                </div>
+                <div id="add-user-error" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
     </div>
 
+    <div id="editUserModal" class="modal" style="display: none;">
+        <div class="modal-content">
+             <div class="modal-header">
+                <h2>Edit User</h2>
+                <span class="close-button" onclick="closeEditUserModal()">&times;</span>
+            </div>
+            <form id="editUserForm" method="post" action="/admin/user/edit">
+                <input type="hidden" id="edit_user_id" name="user_id">
+                <div class="form-group">
+                    <label for="edit_username">Username:</label>
+                    <input type="text" id="edit_username" name="username" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="edit_password">New Password (leave blank to keep current):</label>
+                    <input type="password" id="edit_password" name="new_password" placeholder="Enter new password (optional)">
+                </div>
+                 <div class="form-group">
+                    <label for="edit_is_active">Active:</label>
+                    <select id="edit_is_active" name="is_active">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-button">Save Changes</button>
+                    <button type="button" class="cancel-button" onclick="closeEditUserModal()">Cancel</button>
+                </div>
+                <div id="edit-user-error" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <div id="addWebsiteModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Website</h2>
+                <span class="close-button" onclick="closeAddWebsiteModal()">&times;</span>
+            </div>
+            <form id="addWebsiteForm">
+                <div class="form-group">
+                    <label for="new_website_title">Title:</label>
+                    <input type="text" id="new_website_title" name="title" required placeholder="Enter website title">
+                </div>
+                 <div class="form-group">
+                    <label for="new_website_url">URL:</label>
+                    <input type="text" id="new_website_url" name="url" required placeholder="Enter website URL">
+                </div>
+                 <div class="form-group">
+                    <label for="new_website_description">Description:</label>
+                    <textarea id="new_website_description" name="description" placeholder="Enter website description (optional)"></textarea>
+                </div>
+                <div class="form-group">  <label for="new_website_is_public">Is Public:</label>
+                    <select id="new_website_is_public" name="is_public">
+                        <option value="true">Yes</option>
+                        <option value="false" selected>No</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-button">Add Website</button>
+                    <button type="button" class="cancel-button" onclick="closeAddWebsiteModal()">Cancel</button>
+                </div>
+                <div id="add-website-error" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+     <div id="editWebsiteModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Website</h2>
+                <span class="close-button" onclick="closeEditWebsiteModal()">&times;</span>
+            </div>
+            <form id="editWebsiteForm">
+                 <input type="hidden" id="edit_website_id" name="website_id">
+                <div class="form-group">
+                    <label for="edit_website_title">Title:</label>
+                    <input type="text" id="edit_website_title" name="title" required placeholder="Enter website title">
+                </div>
+                 <div class="form-group">
+                    <label for="edit_website_url">URL:</label>
+                    <input type="text" id="edit_website_url" name="url" required placeholder="Enter website URL">
+                </div>
+                 <div class="form-group">
+                    <label for="edit_website_description">Description:</label>
+                    <textarea id="edit_website_description" name="description" placeholder="Enter website description (optional)"></textarea>
+                </div>
+                <div class="form-group">  <label for="edit_website_is_public">Is Public:</label>
+                    <select id="edit_website_is_public" name="is_public">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-button">Save Changes</button>
+                    <button type="button" class="cancel-button" onclick="closeEditWebsiteModal()">Cancel</button>
+                </div>
+                 <div id="edit-website-error" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="{{ url_for('static', path='/js/admin_user.js') }}"></script>
+    <script src="{{ url_for('static', path='/js/admin_website.js') }}"></script>
+
+
     <script>
-        async function loadUsers() {
-            document.getElementById('dashboard-content').style.display = 'none';
-            document.getElementById('website-data').style.display = 'none';
-            document.getElementById('user-data').style.display = 'block';
-            document.getElementById('user-list-container').innerHTML = '<p class="loading-message">Loading users...</p>';
-
-            try {
-                const response = await fetch('/admin/user/list');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const users = await response.json();
-                displayUsers(users);
-            } catch (error) {
-                document.getElementById('user-list-container').innerHTML = `<p class="error-message">Error loading users: ${error}</p>`;
-            }
-        }
-
-        function displayUsers(users) {
-            let html = '<table class="data-table"><thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Created At</th></tr></thead><tbody>';
-            if (users && users.length > 0) {
-                users.forEach(user => {
-                    html += `<tr><td>${user.id}</td><td>${user.username}</td><td>${user.email}</td><td>${user.created_at}</td></tr>`;
-                });
-            } else {
-                html += '<tr><td colspan="4">No users found.</td></tr>';
-            }
-            html += '</tbody></table>';
-            document.getElementById('user-list-container').innerHTML = html;
-        }
-
-        async function loadWebsites() {
-            document.getElementById('dashboard-content').style.display = 'none';
-            document.getElementById('user-data').style.display = 'none';
-            document.getElementById('website-data').style.display = 'block';
-            document.getElementById('website-list-container').innerHTML = '<p class="loading-message">Loading websites...</p>';
-
-            try {
-                const response = await fetch('/admin/website/list');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const websites = await response.json();
-                displayWebsites(websites);
-            } catch (error) {
-                document.getElementById('website-list-container').innerHTML = `<p class="error-message">Error loading websites: ${error}</p>`;
-            }
-        }
-
-        function displayWebsites(websites) {
-            let html = '<table class="data-table"><thead><tr><th>ID</th><th>Title</th><th>URL</th><th>Description</th></tr></thead><tbody>';
-            if (websites && websites.length > 0) {
-                websites.forEach(website => {
-                    html += `<tr><td>${website.id}</td><td>${website.title}</td><td><a href="${website.url}" target="_blank">${website.url}</a></td><td>${website.description || ''}</td></tr>`;
-                });
-            } else {
-                html += '<tr><td colspan="4">No websites found.</td></tr>';
-            }
-            html += '</tbody></table>';
+        document.addEventListener('DOMContentLoaded', function () {
+            {% if current_user.is_superuser %}
+            // Superusers see the user list by default
+            loadUsers();
+            {% else %}
+            // Non-superusers see the website list by default
+            loadWebsites();
+            {% endif %}
+        });
+    </script>
+</body>
+</html>
