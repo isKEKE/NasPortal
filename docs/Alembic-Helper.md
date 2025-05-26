@@ -1,6 +1,3 @@
-# TODO LIST:
-DASHBOARD需要完善
-
 # 🧭 Alembic 常用命令大全（最常用操作）
 
 | 命令                                       | 功能           | 说明                         |

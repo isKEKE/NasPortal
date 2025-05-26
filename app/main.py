@@ -19,18 +19,3 @@ app.include_router(auth.router)
 app.include_router(admin.router)
 
 
-
-# --- 包含路由 ---
-
-
-# app.include_router(admin.router)
-
-# --- 根路径 (可以重定向或与 portal.router 中的 '/' 冲突, 这里移到 portal.router) ---
-# @app.get("/", response_class=HTMLResponse)
-# async def read_root(request: Request, db: Session = Depends(get_db), current_user = Depends(get_current_user_optional)):
-#     # 可以在这里渲染主页，或者直接使用 portal router 的 "/"
-#     # ... (逻辑与 portal.py 中的类似) ...
-#     pass
-
-# print("FastAPI application started. Routers included.")
-# print("Run with: uvicorn app.main:app --reload")

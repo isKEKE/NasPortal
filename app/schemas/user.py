@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 class UserBase(BaseModel):
     username: str
@@ -8,6 +9,9 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
+    username: str
+    created_at: datetime
+    is_superuser: bool
     is_active: bool
 
     class Config:

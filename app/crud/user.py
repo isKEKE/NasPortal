@@ -22,9 +22,19 @@ def authenticate_user(db: Session, username: str, password: str):
     user = get_user_by_username(db, username)
     if not user:
         return None
+    if not user.is_active:
+        return None
     if not verify_password(password, user.hashed_password): # 需要从 security 导入 verify_password
         return None
     return user
+
+
+def get_all_user(db: Session, skip: int, limit: int):
+    return db.query(User).order_by(User.id).offset(skip).limit(limit).all()
+
+def deactivate_user(db: Session, user: User):
+    user.is_active = False
+    db.commit()
 
 
 # (导入 verify_password)

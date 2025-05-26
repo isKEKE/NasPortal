@@ -1,3 +1,5 @@
+import os
+
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer # 或使用 Cookie
@@ -11,7 +13,7 @@ from app.crud import user as crud_user
 from app.schemas.user import User
 
 # !! 强烈建议将密钥存储在环境变量中 !!
-SECRET_KEY = "YOUR_VERY_SECRET_KEY" # 必须更改并保密
+SECRET_KEY = os.environ["VERY_SECRET_KEY"] # 必须更改并保密
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -32,7 +34,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+        expire = datetime.utcnow() + timedelta(days=1)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
