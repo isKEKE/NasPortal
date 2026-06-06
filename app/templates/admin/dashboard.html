@@ -323,6 +323,8 @@
                 <a href="#" id="users-link" class="admin-nav-link" onclick="loadUsers()"><i class="fas fa-users"></i> Users</a>
             {% endif %}
             <a href="#" id="websites-link" class="admin-nav-link" onclick="loadWebsites()"><i class="fas fa-link"></i> Websites</a>
+            <a href="#" id="tag-link" class="admin-nav-link" onclick="loadTags()"><i class="fas fa-link"></i> Tags</a>
+
             <a href="/" class="admin-nav-link"><i class="fas fa-home"></i>Go Home</a>
             <a href="/auth/logout" class="admin-nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </nav>
@@ -350,6 +352,16 @@
                    </div>
                 <div id="website-list-container">
                     <p class="loading-message">Loading websites...</p>
+                </div>
+            </div>
+
+            <div id="tag-data" class="data-container frosted-glass-admin" style="display: none;">
+                   <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <h2><i class="fas fa-link"></i> Tag List</h2>
+                    <button id="add-tag-button" class="add-item-button" onclick="openAddTagModal()">+</button>
+                   </div>
+                <div id="tag-list-container">
+                    <p class="loading-message">Loading tags...</p>
                 </div>
             </div>
 
@@ -414,6 +426,8 @@
             </form>
         </div>
     </div>
+    <script src="{{ url_for('static', path='/js/admin_user.js') }}"></script>
+
     {% endif %}
 
     <div id="addWebsiteModal" class="modal" style="display: none;">
@@ -450,45 +464,91 @@
         </div>
     </div>
 
-     <div id="editWebsiteModal" class="modal" style="display: none;">
+    <div id="editWebsiteModal" class="modal" style="display: none;">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Edit Website</h2>
                 <span class="close-button" onclick="closeEditWebsiteModal()">&times;</span>
             </div>
             <form id="editWebsiteForm">
-                 <input type="hidden" id="edit_website_id" name="website_id">
+                <input type="hidden" id="edit_website_id" name="website_id">
                 <div class="form-group">
                     <label for="edit_website_title">Title:</label>
                     <input type="text" id="edit_website_title" name="title" required placeholder="Enter website title">
                 </div>
-                 <div class="form-group">
+                <div class="form-group">
                     <label for="edit_website_url">URL:</label>
                     <input type="text" id="edit_website_url" name="url" required placeholder="Enter website URL">
                 </div>
-                 <div class="form-group">
+                <div class="form-group">
                     <label for="edit_website_description">Description:</label>
                     <textarea id="edit_website_description" name="description" placeholder="Enter website description (optional)"></textarea>
                 </div>
-                <div class="form-group">  <label for="edit_website_is_public">Is Public:</label>
+                <div class="form-group">
+                    <label for="edit_website_is_public">Is Public:</label>
                     <select id="edit_website_is_public" name="is_public">
                         <option value="true">Yes</option>
                         <option value="false">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit_website_tags">Tags:</label>
+                    <select id="edit_website_tags" name="tags" multiple>
+                        <!-- Tags will be populated here -->
                     </select>
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="submit-button">Save Changes</button>
                     <button type="button" class="cancel-button" onclick="closeEditWebsiteModal()">Cancel</button>
                 </div>
-                 <div id="edit-website-error" class="error-message" style="display: none;"></div>
+                <div id="edit-website-error" class="error-message" style="display: none;"></div>
             </form>
         </div>
     </div>
 
+    <div id="addTagModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Tag</h2>
+                <span class="close-button" onclick="closeAddTagModal()">&times;</span>
+            </div>
+            <form id="addTagForm">
+                <div class="form-group">
+                    <label for="new_tag_name">Tag Name:</label>
+                    <input type="text" id="new_tag_name" name="new_tag_name" required placeholder="Enter tag name">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-button">Add Tag</button>
+                    <button type="button" class="cancel-button" onclick="closeAddTagModal()">Cancel</button>
+                </div>
+                <div id="add-tag-error" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
 
-    <script src="{{ url_for('static', path='/js/admin_user.js') }}"></script>
+    <div id="editTagModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Tag</h2>
+                <span class="close-button" onclick="closeEditTagModal()">&times;</span>
+            </div>
+            <form id="editTagForm">
+                <input type="hidden" id="edit_tag_id" name="tag_id">
+                <div class="form-group">
+                    <label for="edit_tag_name">Tag Name:</label>
+                    <input type="text" id="edit_tag_name" name="name" required placeholder="Enter tag name">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-button">Save Changes</button>
+                    <button type="button" class="cancel-button" onclick="closeEditTagModal()">Cancel</button>
+                </div>
+                <div id="edit-tag-error" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
     <script src="{{ url_for('static', path='/js/admin_website.js') }}"></script>
-
+    <script src="{{ url_for('static', path='/js/admin_tag.js') }}"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -500,6 +560,7 @@
             loadWebsites();
             {% endif %}
         });
+
     </script>
 </body>
 </html>

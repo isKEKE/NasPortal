@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session, joinedload
 from app.models.website import Website
 from app.models.user import User
 from app.schemas.website import WebsiteCreate
+from typing import List, Optional
 
 
 def get_website_by_user(db: Session, user_id:int, website_id: int):
@@ -65,3 +66,27 @@ def delete_website(db: Session, db_website: Website):
     db.delete(db_website)
     db.commit()
     return db_website
+
+
+# def add_tags_to_website(db: Session, website: Website, tags: List[str]) -> Website:
+#     if website.tags is None:
+#         website.tags = []
+#     website.tags = list(set(website.tags + tags))
+#     db.commit()
+#     db.refresh(website)
+#     return website
+
+
+# def remove_tags_from_website(db: Session, website: Website, tags: List[str]) -> Website:
+#     if website.tags:
+#         website.tags = [tag for tag in website.tags if tag not in tags]
+#         db.commit()
+#         db.refresh(website)
+#     return website
+
+
+# def clear_website_tags(db: Session, website: Website) -> Website:
+#     website.tags = None
+#     db.commit()
+#     db.refresh(website)
+#     return website

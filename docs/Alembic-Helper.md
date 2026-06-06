@@ -4,7 +4,7 @@
 |--------------------------------------------|----------------|------------------------------|
 | `alembic init alembic`                      | 初始化         | 创建 Alembic 目录和配置       |
 | `alembic revision -m "描述"`                 | 创建迁移脚本   | 手动编写迁移内容             |
-| `alembic revision --autogenerate -m "描述"` | 自动生成迁移脚本 | 自动比对模型和数据库结构差异 |
+| *`alembic revision --autogenerate -m "描述"` | 自动生成迁移脚本 | 自动比对模型和数据库结构差异 |
 | `alembic upgrade head`                       | 升级数据库     | 执行到最新迁移版本           |
 | `alembic upgrade +1`                         | 升级一步       | 向上执行一步迁移             |
 | `alembic downgrade -1`                       | 回滚一步       | 回退一条迁移                 |

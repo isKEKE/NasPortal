@@ -1,6 +1,7 @@
 import uvicorn
 import typer
 import subprocess
+import os
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -16,6 +17,10 @@ def rundev(host: str = "127.0.0.1", port: int = 8000, reload: bool = True):
 
 @app.command()
 def runprd(host: str = "0.0.0.0", port: int = 8000, workers: int = 1):
+    if os.name == "nt":
+        uvicorn.run("app.main:app", host=host, port=port, reload=False)
+        return
+
     command = [
         "gunicorn",
         "app.main:app",

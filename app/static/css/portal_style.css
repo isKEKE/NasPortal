@@ -1,260 +1,785 @@
-/* Basic reset and body styling */
-html, body {
+:root {
+    color-scheme: light;
+    --bg: #f5f7fb;
+    --surface: rgba(255, 255, 255, 0.94);
+    --surface-strong: #ffffff;
+    --surface-soft: #eef3ff;
+    --border: rgba(24, 35, 64, 0.12);
+    --border-strong: rgba(40, 83, 255, 0.32);
+    --text: #0c1428;
+    --muted: #65708b;
+    --primary: #2f5cff;
+    --primary-soft: rgba(47, 92, 255, 0.08);
+    --success: #18b866;
+    --success-soft: rgba(24, 184, 102, 0.12);
+    --amber: #f59e0b;
+    --shadow: 0 16px 46px rgba(20, 33, 70, 0.08);
+    --shadow-soft: 0 8px 22px rgba(20, 33, 70, 0.06);
+    --sidebar-width: 286px;
+    --topbar-height: 88px;
+    --radius-panel: 18px;
+    --radius-card: 14px;
+    --font-ui: "Space Grotesk", "Segoe UI", sans-serif;
+    --font-display: "Silkscreen", "Courier New", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --bg: #07111f;
+        --surface: rgba(10, 20, 38, 0.94);
+        --surface-strong: #0b1628;
+        --surface-soft: rgba(47, 92, 255, 0.14);
+        --border: rgba(121, 148, 217, 0.2);
+        --border-strong: rgba(61, 119, 255, 0.42);
+        --text: #f5f8ff;
+        --muted: #a7b0c8;
+        --primary: #4382ff;
+        --primary-soft: rgba(67, 130, 255, 0.15);
+        --success: #32e382;
+        --success-soft: rgba(50, 227, 130, 0.14);
+        --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+        --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.22);
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
     margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%; /* Ensure body takes full viewport height */
-    overflow-x: hidden; /* Hide horizontal scrollbar */
-    overflow-y: auto; /* Allow vertical scrolling for the entire page */
-    font-family: 'Noto Sans SC', sans-serif; /* Apply font */
-
-    /* --- Background Styling --- */
-    /* Add your background image URL here. The linear-gradient can be used as an overlay or fallback. */
-    background-image: url('../img/portal-background-3.jpg'); /* <-- Put your image URL here */
-    background-size: cover; /* Cover the entire viewport */
-    background-position: center; /* Center the background image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-attachment: fixed; /* Keep background fixed while content scrolls */
-    /* Optional: Add a linear gradient overlay for effect or as a fallback if the image fails to load */
-    /* background: linear-gradient(rgba(106, 17, 203, 0.7), rgba(37, 117, 252, 0.7)), url('../img/admin-background.jpg'); Example overlay + image fallback */
-    /* Note: If using only background-image, ensure the 'background' shorthand is commented out or removed */
-    /* -------------------------- */
-
-
-    color: #fff; /* Default text color */
-    line-height: 1.6;
+    overflow: hidden;
+    font-family: var(--font-ui);
+    color: var(--text);
+    background:
+        radial-gradient(circle at 18% 8%, rgba(47, 92, 255, 0.08), transparent 26%),
+        radial-gradient(circle at 88% 90%, rgba(24, 184, 102, 0.09), transparent 28%),
+        var(--bg);
 }
 
-.portal-main-container {
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+.portal-shell {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    height: 100vh;
+    min-height: 0;
+}
+
+.portal-sidebar {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 26px;
+    min-height: 0;
+    padding: 24px 16px 20px;
+    border-right: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface-strong) 74%, transparent);
+    backdrop-filter: blur(18px);
+}
+
+.brand-lockup {
     display: flex;
-    flex-direction: column; /* Arrange children vertically */
-    min-height: 100vh; /* Ensure container is at least viewport height */
+    align-items: center;
+    gap: 12px;
+    min-height: 76px;
+    padding: 8px 8px 18px;
+    border-bottom: 1px solid var(--border);
+}
+
+.brand-mark {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border: 2px solid var(--text);
+    border-radius: 8px;
+    background: linear-gradient(180deg, #fdfefe, #e7edff);
+    box-shadow: inset 0 -8px 0 rgba(47, 92, 255, 0.1), 0 6px 0 rgba(12, 20, 40, 0.12);
+}
+
+.brand-mark::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    width: 24px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--text);
+}
+
+.brand-mark-screen {
+    font-family: var(--font-display);
+    color: var(--success);
+    font-size: 0.8rem;
+}
+
+.brand-copy {
+    min-width: 0;
+}
+
+.brand-title,
+.hero-panel h1,
+.section-header h2,
+.terminal-header h2 {
+    font-family: var(--font-display);
+    letter-spacing: 0;
+}
+
+.brand-title {
+    display: block;
+    font-size: 1.48rem;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.brand-subtitle {
+    margin: 5px 0 0;
+    color: var(--primary);
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+.portal-nav {
+    display: grid;
+    gap: 12px;
+}
+
+.portal-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
     width: 100%;
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    padding: 20px; /* Add some padding around the content */
-    /* padding-bottom will be handled by the space between the last section and the footer */
-    overflow-y: visible; /* Allow content to overflow and be scrolled by the body */
-    position: relative; /* Needed for potential absolute positioning of children */
-    z-index: 1; /* Ensure content is above the background */
+    min-height: 52px;
+    padding: 0 18px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--shadow-soft);
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
 }
 
-/* Frosted glass effect */
-.frosted-glass {
-    /* Reduced opacity for background-color */
-    background-color: rgba(255, 255, 255, 0.08); /* Semi-transparent white, lower opacity */
-    backdrop-filter: blur(10px); /* Apply the blur effect */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
-    border-radius: 15px; /* Rounded corners */
-    padding: 15px; /* Reduced padding */
-    margin-bottom: 20px; /* Space between sections */
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Add some shadow */
-    /* Add text shadow for better readability */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+.portal-nav-link i {
+    width: 18px;
+    color: var(--primary);
 }
 
-/* Header styling */
-.portal-header {
+.portal-nav-link:hover,
+.portal-nav-link.is-active {
+    color: var(--primary);
+    border-color: var(--border-strong);
+    background: var(--primary-soft);
+}
+
+.identity-card {
+    align-self: end;
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: var(--shadow-soft);
+}
+
+.identity-avatar {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    color: var(--primary);
+    background: var(--surface-soft);
+    font-family: var(--font-display);
+    font-size: 0.86rem;
+}
+
+.identity-copy {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.identity-copy strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1rem;
+}
+
+.identity-copy span {
+    color: var(--muted);
+    font-size: 0.76rem;
+}
+
+.sidebar-button {
+    grid-column: 1 / -1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 38px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface-strong);
+    color: var(--text);
+    font-weight: 700;
+}
+
+.portal-main {
+    display: grid;
+    grid-template-rows: var(--topbar-height) minmax(0, 1fr);
+    min-width: 0;
+    min-height: 0;
+}
+
+.portal-topbar {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 28px;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(18px);
+}
+
+.command-search {
+    flex: 1;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    height: 52px;
+    padding: 0 16px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: var(--shadow-soft);
+}
+
+.search-kicker {
+    color: var(--primary);
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.command-search i {
+    color: var(--primary);
+    font-size: 0.86rem;
+}
+
+.command-search input {
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text);
+    font-size: 1rem;
+}
+
+.command-search input::placeholder {
+    color: var(--muted);
+}
+
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 20px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface-strong);
+    color: var(--text);
+    box-shadow: var(--shadow-soft);
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.action-button:hover,
+.app-tile:hover {
+    transform: translateY(-1px);
+}
+
+.action-button-primary {
+    width: 56px;
+    padding: 0;
+    border-color: var(--border-strong);
+    color: var(--primary);
+    font-size: 1.4rem;
+}
+
+.action-button-success {
+    border-color: rgba(24, 184, 102, 0.42);
+    color: var(--success);
+}
+
+.portal-content {
+    display: grid;
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+    gap: 16px;
+    min-height: 0;
+    width: min(1060px, calc(100% - 44px));
+    margin: 26px auto 24px;
+    overflow: hidden;
+}
+
+.panel {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-panel);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.hero-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 206px;
+    padding: 22px 26px;
+}
+
+.hero-copy {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    min-width: 0;
+}
+
+.hero-icon {
+    width: 88px;
+    height: 88px;
+    display: grid;
+    place-items: center;
+    flex: none;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: linear-gradient(180deg, var(--surface-strong), var(--surface-soft));
+    color: var(--primary);
+    font-size: 2.5rem;
+}
+
+.hero-copy-content {
+    min-width: 0;
+}
+
+.hero-panel h1 {
+    margin: 0;
+    max-width: 620px;
+    font-size: clamp(1.85rem, 2vw, 2.35rem);
+    line-height: 1.35;
+}
+
+.hero-panel p {
+    margin: 12px 0 16px;
+    max-width: 650px;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.hero-command {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-size: 0.96rem;
+}
+
+.hero-command-user {
+    color: var(--success);
+}
+
+.hero-actions {
+    display: grid;
+    justify-items: end;
+    gap: 18px;
+    min-width: 220px;
+}
+
+.hero-links {
+    display: flex;
+    gap: 10px;
+    color: var(--primary);
+    font-size: 0.86rem;
+    font-weight: 800;
+}
+
+.hero-links a + a::before {
+    content: "/";
+    margin-right: 10px;
+    color: var(--muted);
+}
+
+.terminal-panel {
+    display: grid;
+    gap: 12px;
+    padding: 18px 20px;
+}
+
+.terminal-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Separator line */
+    gap: 16px;
 }
 
-.portal-logo-area {
-    font-size: 1.8em;
-    font-weight: 500;
+.terminal-header h2 {
+    margin: 0;
+    font-size: 1.35rem;
 }
 
-.portal-datetime-weather {
-    font-size: 0.9em;
-    display: flex;
-    gap: 15px; /* Space between time, date, weather */
-    padding: 10px 15px; /* Adjust padding */
-    border-radius: 10px; /* Smaller border-radius for this element */
+.terminal-header p {
+    margin: 4px 0 0;
+    color: var(--muted);
 }
 
-/* Main content grid - Modified for draggable elements */
-.portal-content-grid {
-    /* Removed grid display to allow absolute positioning of children */
-    /* display: grid; */
-    /* grid-template-columns: 1fr; */
-    gap: 20px; /* Space between grid items */
-    flex-grow: 1; /* Allow main content to take up available space */
-    position: relative; /* Needed for absolute positioning of children */
-    min-height: 300px; /* Ensure some height even if content is sparse */
+.terminal-close {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface-strong);
+    color: var(--muted);
+    cursor: pointer;
 }
 
-/* Draggable Links Area Styling */
-.portal-links-area {
-    /* Added position and initial position */
-    position: absolute; /* Allow absolute positioning */
-    top: 0; /* Initial top position */
-    left: 0; /* Initial left position */
-    width: 300px; /* Initial width */
-    /* height: auto; */ /* Allow height to adjust to content */
-    cursor: grab; /* Indicate draggable */
-    z-index: 10; /* Ensure it's above other non-positioned content */
+.terminal-output {
+    max-height: 104px;
+    overflow: auto;
+    padding: 12px;
+    border-radius: 12px;
+    background: #091225;
+    color: #d9e8ff;
+    font-family: "Courier New", monospace;
+    font-size: 0.88rem;
 }
 
-.portal-links-area h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.3em;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
-    cursor: grab; /* Indicate draggable on header as well */
+.terminal-output p {
+    margin: 0 0 6px;
 }
 
-.portal-links-grid {
+.terminal-output span,
+.terminal-form label {
+    color: var(--success);
+}
+
+.terminal-form {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Grid for links */
-    gap: 10px; /* Space between link cards */
-    max-height: 180px; /* Slightly reduced max height */
-    overflow-y: auto; /* Add vertical scrollbar if content exceeds max height */
-    padding-right: 10px; /* Add padding to prevent scrollbar from overlapping content */
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    font-family: "Courier New", monospace;
 }
 
-/* Style the scrollbar for the links grid */
-.portal-links-grid::-webkit-scrollbar {
-    width: 8px;
-}
-
-.portal-links-grid::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
+.terminal-form input {
+    height: 38px;
+    border: 1px solid var(--border);
     border-radius: 10px;
+    padding: 0 12px;
+    outline: 0;
+    background: var(--surface-strong);
+    color: var(--text);
 }
 
-.portal-links-grid::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
 }
 
-.portal-links-grid::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.5);
+.metric-card,
+.monitor-card {
+    min-height: 142px;
+    padding: 16px 16px 14px;
 }
 
-.portal-link-card {
+.metric-label {
+    margin: 0 0 12px;
+    color: var(--muted);
+    font-size: 1.06rem;
+    font-weight: 700;
+}
+
+.metric-value {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    margin: 0;
+    color: var(--muted);
+}
+
+.metric-number {
+    font-size: 2.55rem;
+    line-height: 1;
+    font-weight: 800;
+}
+
+.metric-blue {
+    color: var(--primary);
+}
+
+.metric-green {
+    color: var(--success);
+}
+
+.metric-amber {
+    color: var(--amber);
+}
+
+.metric-track {
+    height: 12px;
+    margin-top: 18px;
+    border-radius: 999px;
+    background: rgba(119, 133, 166, 0.16);
+    overflow: hidden;
+}
+
+.metric-fill {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    transition: width 240ms ease;
+}
+
+.metric-fill.metric-blue {
+    background: linear-gradient(90deg, #2f5cff, #6794ff);
+}
+
+.metric-fill.metric-green {
+    background: linear-gradient(90deg, #18b866, #54d890);
+}
+
+.metric-fill.metric-amber {
+    background: linear-gradient(90deg, #f59e0b, #ffc247);
+}
+
+.metric-icon {
+    float: right;
+    margin-top: 14px;
+    color: var(--muted);
+}
+
+.monitor-card {
+    border-color: rgba(24, 184, 102, 0.34);
+    background: linear-gradient(180deg, var(--success-soft), var(--surface));
+}
+
+.monitor-title {
     display: flex;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.1); /* Slightly darker background for cards */
-    padding: 10px;
-    border-radius: 8px;
-    text-decoration: none;
-    color: #fff;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    gap: 10px;
+    margin: 0 0 10px;
+    color: var(--success);
+    font-size: 1.2rem;
+    font-weight: 800;
 }
 
-.portal-link-card i {
-    margin-right: 8px;
-    font-size: 1.1em;
+.monitor-card p {
+    margin: 0 0 6px;
+    font-size: 0.98rem;
 }
 
-.portal-link-card span {
-    flex-grow: 1; /* Allow text to take available space */
-    white-space: nowrap; /* Prevent text wrapping */
-    overflow: hidden; /* Hide overflowing text */
-    text-overflow: ellipsis; /* Add ellipsis for truncated text */
+.section-panel {
+    min-height: 0;
+    padding: 20px;
+    overflow: hidden;
 }
 
-.portal-link-card:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-3px); /* Slight lift effect */
+.section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 16px;
 }
 
-/* Quote section - Adjusted position */
-.portal-quote {
-    text-align: center;
-    font-style: italic;
-    margin-top: 20px;
-    padding: 15px;
+.section-header h2 {
+    margin: 0;
+    font-size: 1.75rem;
+}
+
+.section-header p {
+    margin: 6px 0 0;
+    color: var(--muted);
+}
+
+.view-toggle {
+    display: inline-flex;
+    gap: 8px;
+    padding: 6px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface-strong);
+}
+
+.view-toggle-button {
+    min-width: 76px;
+    min-height: 40px;
+    border: 1px solid transparent;
     border-radius: 10px;
-    padding-bottom: 25px; /* Increased bottom padding */
-    margin-bottom: 20px; /* Add margin below the quote section */
-    /* Added relative positioning to keep it in the flow below header */
-    position: relative;
-    z-index: 5; /* Ensure it's below draggable elements but above background */
+    background: transparent;
+    color: var(--muted);
+    font-weight: 800;
+    cursor: pointer;
 }
 
-.portal-quote p {
-     margin-bottom: 10px; /* Add space below the quote text */
+.view-toggle-button.is-active {
+    color: var(--primary);
+    border-color: var(--border-strong);
+    background: var(--surface);
 }
 
-.portal-quote footer {
-    margin-top: 10px;
-    font-size: 0.9em;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 15px; /* Add space below the footer */
+.apps-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(120px, 1fr));
+    gap: 14px;
+    max-height: calc(100vh - 640px);
+    min-height: 160px;
+    overflow: auto;
+    padding: 2px 4px 8px 0;
 }
 
-/* Social links styling */
-.portal-social-links {
-    text-align: center; /* Center the social links within the quote box */
-    margin-top: 15px; /* Add some space above the social links */
+.apps-grid[data-view="cards"] {
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
 }
 
-.portal-social-links a {
-    color: #fff;
-    font-size: 1.5em;
-    margin: 0 8px; /* Adjust margin for spacing between icons */
-    transition: color 0.3s ease;
-    display: inline-block; /* Ensure margin works correctly */
-}
-
-.portal-social-links a:hover {
-    color: #a0c4ff; /* Lighter color on hover */
-}
-
-
-/* Footer styling */
-.portal-footer {
+.app-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 142px;
+    padding: 16px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: color-mix(in srgb, var(--surface-strong) 84%, transparent);
+    box-shadow: var(--shadow-soft);
     text-align: center;
-    padding: 15px 20px; /* Add padding */
-    background-color: rgba(0, 0, 0, 0.3); /* Add a semi-transparent background */
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.8em;
-    z-index: 100; /* Ensure footer is above other content */
-    box-sizing: border-box; /* Include padding in width */
-    width: 100%; /* Ensure footer takes full width */
-    margin-top: auto; /* Push footer to the bottom if content is less than viewport height */
-    position: relative; /* Added relative positioning */
 }
 
-.portal-footer a {
-    color: rgba(255, 255, 255, 0.9);
-    text-decoration: none;
-    transition: color 0.3s ease;
+.apps-grid[data-view="cards"] .app-tile {
+    align-items: flex-start;
+    text-align: left;
 }
 
-.portal-footer a:hover {
-    color: #fff;
-    text-decoration: underline;
+.app-icon {
+    width: 64px;
+    height: 64px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: linear-gradient(180deg, var(--surface-strong), var(--surface-soft));
+    color: var(--primary);
+    font-size: 1.7rem;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .portal-header {
+.app-tile strong {
+    margin-top: 13px;
+    color: var(--text);
+    font-size: 1rem;
+}
+
+.app-tile span {
+    margin-top: 4px;
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 0.88rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.empty-state {
+    padding: 18px;
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+    color: var(--muted);
+}
+
+.is-hidden,
+[data-resource-card].is-filtered {
+    display: none !important;
+}
+
+@media (max-width: 1280px) {
+    .portal-content {
+        width: min(980px, calc(100% - 32px));
+    }
+
+    .metrics-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .monitor-card {
+        grid-column: span 4;
+    }
+}
+
+@media (max-width: 920px) {
+    body {
+        overflow: auto;
+    }
+
+    .portal-shell {
+        grid-template-columns: 1fr;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .portal-sidebar {
+        grid-template-rows: auto auto;
+    }
+
+    .identity-card {
+        align-self: auto;
+    }
+
+    .portal-main,
+    .portal-content {
+        min-height: auto;
+    }
+
+    .portal-content {
+        overflow: visible;
+    }
+
+    .metrics-grid,
+    .apps-grid,
+    .apps-grid[data-view="cards"] {
+        grid-template-columns: 1fr;
+    }
+
+    .apps-grid {
+        max-height: none;
+    }
+
+    .hero-panel,
+    .section-header {
         flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .portal-datetime-weather {
-        margin-top: 10px;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    /* On small screens, draggable element should take natural width */
-    .portal-links-area {
-        width: auto; /* Removed fixed width */
-        position: relative; /* Revert to relative positioning on small screens */
-        top: auto;
-        left: auto;
-        margin-bottom: 20px; /* Add margin when stacked */
-    }
-
-    .portal-quote, .portal-footer {
-         position: relative; /* Ensure they stack correctly below links area */
+        align-items: stretch;
     }
 }

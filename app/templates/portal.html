@@ -3,193 +3,161 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Portal</title>
+    <title>NasPortal</title>
     <link rel="stylesheet" href="{{ url_for('static', path='/css/portal_style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body class="portal-page">
-
-    <div class="portal-main-container">
-
-        <header class="portal-header">
-            <div class="portal-logo-area">
-                MyPortal
+    <div class="portal-shell">
+        <aside class="portal-sidebar">
+            <div class="brand-lockup">
+                <a href="/" class="brand-mark" aria-label="NasPortal home">
+                    <span class="brand-mark-screen">&gt;_</span>
+                </a>
+                <div class="brand-copy">
+                    <a href="/" class="brand-title">NasPortal</a>
+                    <p class="brand-subtitle">personal terminal</p>
+                </div>
             </div>
-            <div class="portal-datetime-weather frosted-glass">
-                <span class="time" id="portal-time">--:--:--</span>
-                <span class="date" id="portal-date">----年--月--日 星期-</span>
-                <span class="weather" id="portal-weather">城市 --°C 天气 --级</span>
-            </div>
-        </header>
 
-        <main class="portal-content-grid">
+            <nav class="portal-nav">
+                <a class="portal-nav-link is-active" href="#dashboard-section"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+                <button class="portal-nav-link" type="button" data-open-terminal><i class="fa-solid fa-terminal"></i><span>Terminal</span></button>
+                <a class="portal-nav-link" href="#apps-section"><i class="fa-solid fa-window-restore"></i><span>Apps</span></a>
+            </nav>
 
-            <section class="portal-links-area frosted-glass" id="draggable-links">
-                <h3><i class="fas fa-link"></i> Website List</h3>
-                <nav class="portal-links-grid">
-                    {% for site in websites %}
-                    <a href="{{ site.url }}" class="portal-link-card" target="_blank" title="{{ site.description | default(site.title, true) }}">
-                        <i class="fas fa-globe"></i>
-                        <span>{{ site.title }}</span>
-                    </a>
-                    {% else %}
-                    <p>暂无网站链接。</p>
+            <section class="identity-card">
+                <div class="identity-avatar">{{ current_username[:1] | upper }}</div>
+                <div class="identity-copy">
+                    <strong>{{ current_username }}</strong>
+                    <span>signed in</span>
+                </div>
+                <a class="sidebar-button" href="/auth/logout"><i class="fa-solid fa-lock"></i><span>Lock</span></a>
+            </section>
+        </aside>
+
+        <div class="portal-main">
+            <header class="portal-topbar">
+                <label class="command-search" for="portal-search">
+                    <span class="search-kicker">Search</span>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input id="portal-search" data-portal-search type="search" autocomplete="off" placeholder="Find an app or type a command">
+                </label>
+                <a class="action-button action-button-primary" href="/admin" aria-label="Manage links">+</a>
+            </header>
+
+            <main class="portal-content" id="dashboard-section">
+                <section class="panel hero-panel" id="hero-section">
+                    <div class="hero-copy">
+                        <div class="hero-icon">
+                            <i class="fa-solid fa-computer"></i>
+                        </div>
+                        <div class="hero-copy-content">
+                            <h1>Personal Terminal Portal</h1>
+                            <p>Admin login, VPS monitoring, and app management from one local-first entry point.</p>
+                            <div class="hero-command">
+                                <span class="hero-command-user">{{ current_username }}@nas-vps-01:~$</span>
+                                <span>system status --brief</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-actions">
+                        <button class="action-button action-button-success" type="button" data-open-launcher>Open app launcher</button>
+                        <nav class="hero-links">
+                            {% for link in hero_links %}
+                            <a href="{{ link.href }}">{{ link.label }}</a>
+                            {% endfor %}
+                        </nav>
+                    </div>
+                </section>
+
+                <section class="panel terminal-panel is-hidden" id="terminal-section" data-terminal-panel>
+                    <div class="terminal-header">
+                        <div>
+                            <h2>Terminal</h2>
+                            <p>Run portal commands or open an app by name.</p>
+                        </div>
+                        <button class="terminal-close" type="button" data-close-terminal aria-label="Close terminal"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="terminal-output" data-terminal-output>
+                        <p><span>{{ current_username }}@nasportal:~$</span> help</p>
+                        <p>Commands: help, apps, open &lt;name&gt;, admin, logout</p>
+                    </div>
+                    <form class="terminal-form" data-terminal-form>
+                        <label for="terminal-input">{{ current_username }}@nasportal:~$</label>
+                        <input id="terminal-input" data-terminal-input type="text" autocomplete="off" placeholder="open grafana">
+                    </form>
+                </section>
+
+                <section class="metrics-grid" id="metrics-section">
+                    {% for metric in metrics %}
+                    <article class="panel metric-card" data-metric-card="{{ metric.key }}">
+                        <p class="metric-label">{{ metric.label }}</p>
+                        <p class="metric-value"><span class="metric-number metric-{{ metric.accent }}" data-metric-value>{{ metric.display }}</span> <span data-metric-unit>{{ metric.unit }}</span></p>
+                        <div class="metric-track">
+                            <span class="metric-fill metric-{{ metric.accent }}" data-metric-fill style="width: {{ metric.progress }}%;"></span>
+                        </div>
+                        <i class="metric-icon {{ metric.icon_class }}"></i>
+                    </article>
                     {% endfor %}
 
-                    {% if current_user %}
-                    <a href="/admin" class="portal-link-card">
-                        <i class="fas fa-cog"></i>
-                        <span>管理后台</span>
-                    </a>
-                    {% endif %}
-                </nav>
-            </section>
+                    <article class="panel monitor-card">
+                        <p class="monitor-title"><i class="fa-solid fa-arrow-trend-up"></i>VPS monitor</p>
+                        <div data-monitor-lines>
+                            {% for line in portal_status %}
+                            <p>{{ line }}</p>
+                            {% endfor %}
+                        </div>
+                    </article>
+                </section>
 
+                <section class="panel section-panel" id="apps-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Apps</h2>
+                            <p>Icon-first launcher for tools you already recognize.</p>
+                        </div>
+                        <div class="view-toggle" role="group" aria-label="App view">
+                            <button class="view-toggle-button is-active" type="button" data-view-mode="icons">Icons</button>
+                            <button class="view-toggle-button" type="button" data-view-mode="cards">Cards</button>
+                        </div>
+                    </div>
+
+                    <div class="apps-grid" data-apps-grid>
+                        {% for item in portal_items %}
+                        <a
+                            class="app-tile"
+                            href="{{ item.url }}"
+                            target="_blank"
+                            rel="noreferrer"
+                            title="{{ item.description }}"
+                            data-resource-card
+                            data-app-title="{{ item.title }}"
+                            data-search="{{ item.title }} {{ item.description }} {{ item.domain }} {{ item.category }}"
+                        >
+                            <div class="app-icon">
+                                <i class="{{ item.icon_class }}"></i>
+                            </div>
+                            <strong>{{ item.title }}</strong>
+                            <span>{{ item.subtitle }}</span>
+                        </a>
+                        {% else %}
+                        <div class="empty-state" data-apps-empty>
+                            <p>No apps yet. Add links from the admin panel to populate the launcher.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="empty-state is-hidden" data-apps-empty>
+                        <p>No apps match the current search.</p>
+                    </div>
+                </section>
             </main>
-
-        <section class="portal-quote frosted-glass">
-            <p>"生命如意志永存，青春永逐年华。"</p>
-            <footer>- 某某某</footer>
-            <div class="portal-social-links">
-                <a href="#" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="#" title="Twitter" target="_blank"><i class="fab fa-twitter"></i></a>
-                <a href="#" title="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                <a href="mailto:your-email@example.com" title="Email"><i class="fas fa-envelope"></i></a>
-            </div>
-        </section>
-
-        <footer class="portal-footer">
-            Copyright &copy; 2020 - {% block current_year %}2025{% endblock %} Your Name/Site & Made by You
-            {% if current_user %}
-                | <a href="/auth/logout" style="color: rgba(255,255,255,0.7);">Logout</a>
-            {% else %}
-                | <a href="/auth/login" style="color: rgba(255,255,255,0.7);">Login</a>
-            {% endif %}
-        </footer>
-
+        </div>
     </div>
 
-    <script>
-        // Function to update time, date, and weather (weather is placeholder)
-        function updateTime() {
-            const now = new Date();
-            const timeEl = document.getElementById('portal-time');
-            const dateEl = document.getElementById('portal-date');
-            const weatherEl = document.getElementById('portal-weather'); // Placeholder
-
-            if (timeEl) {
-                // Use Chinese locale for time format
-                timeEl.textContent = now.toLocaleTimeString('zh-CN', { hour12: false });
-            }
-            if (dateEl) {
-                // Use Chinese locale for date format
-                const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-                dateEl.textContent = now.toLocaleDateString('zh-CN', options);
-            }
-            // Weather needs an API call - this is just a placeholder
-            // if (weatherEl) { weatherEl.textContent = 'Fetching...'; } // Example English placeholder
-        }
-        // Update time every second
-        setInterval(updateTime, 1000);
-        // Initial call to display time immediately
-        updateTime();
-
-        // Optional: Update year in footer dynamically
-        // document.querySelector('.-footer').innerHTML = document.querySelector('.-footer').innerHTML.replace('2025', new Date().getFullYear());
-
-
-        // --- Draggable Functionality with Local Storage ---
-        const draggableElement = document.getElementById('draggable-links');
-        const storageKey = 'draggableLinksPosition'; // Key for localStorage
-
-        let isDragging = false;
-        let currentX;
-        let currentY;
-        let initialX;
-        let initialY;
-        let xOffset = 0;
-        let yOffset = 0;
-
-        // Get the header of the draggable element to use as a drag handle
-        const dragHandle = draggableElement.querySelector('h3');
-
-        // Load saved position from localStorage on page load
-        function loadSavedPosition() {
-            const savedPosition = localStorage.getItem(storageKey);
-            if (savedPosition) {
-                const position = JSON.parse(savedPosition);
-                xOffset = position.x;
-                yOffset = position.y;
-                setTranslate(xOffset, yOffset, draggableElement);
-            }
-        }
-
-        // Save current position to localStorage
-        function saveCurrentPosition() {
-            const position = { x: xOffset, y: yOffset };
-            localStorage.setItem(storageKey, JSON.stringify(position));
-        }
-
-        if (dragHandle) {
-            dragHandle.addEventListener('mousedown', dragStart);
-            document.addEventListener('mouseup', dragEnd);
-            document.addEventListener('mousemove', drag);
-        } else {
-             // If no h3, make the whole element draggable
-            draggableElement.addEventListener('mousedown', dragStart);
-            document.addEventListener('mouseup', dragEnd);
-            document.addEventListener('mousemove', drag);
-        }
-
-        function dragStart(e) {
-            initialX = e.clientX - xOffset;
-            initialY = e.clientY - yOffset;
-
-            // Check if the mousedown event occurred on the draggable element itself or its handle
-            if (e.target === draggableElement || e.target === dragHandle || dragHandle.contains(e.target)) {
-                 isDragging = true;
-                 draggableElement.style.cursor = 'grabbing'; // Change cursor while dragging
-            }
-        }
-
-        function dragEnd(e) {
-            initialX = currentX;
-            initialY = currentY;
-
-            isDragging = false;
-            draggableElement.style.cursor = 'grab'; // Restore cursor
-
-            // Save position when dragging ends
-            saveCurrentPosition();
-        }
-
-        function drag(e) {
-            if (isDragging) {
-                e.preventDefault(); // Prevent default browser drag behavior
-
-                currentX = e.clientX - initialX;
-                currentY = e.clientY - initialY;
-
-                xOffset = currentX;
-                yOffset = currentY;
-
-                setTranslate(currentX, currentY, draggableElement);
-            }
-        }
-
-        function setTranslate(xPos, yPos, el) {
-            el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
-        }
-
-        // Load saved position when the page finishes loading
-        window.addEventListener('load', loadSavedPosition);
-
-        // --- End Draggable Functionality with Local Storage ---
-
-    </script>
-
+    <script type="module" src="{{ url_for('static', path='/js/portal_dashboard.js') }}"></script>
 </body>
 </html>

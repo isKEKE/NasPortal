@@ -16,3 +16,5 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     # 可以添加 is_superuser 等字段用于权限控制
     websites = relationship("Website", back_populates="owner", cascade="all, delete", passive_deletes=True)
+    tags = relationship("Tag", back_populates="owner", cascade="all, delete", passive_deletes=True)
+

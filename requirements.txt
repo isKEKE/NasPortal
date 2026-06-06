@@ -12,3 +12,4 @@ pydantic[email] # For email validation if needed in schemas
 typer[all]
 psycopg2
 gunicorn
+psutil

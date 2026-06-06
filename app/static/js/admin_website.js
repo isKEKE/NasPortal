@@ -8,10 +8,17 @@ async function loadWebsites() {
     document.getElementById('website-data').style.display = 'block';
 
     // Add active class to Websites link and remove from others (if they exist)
-    const usersLink = document.getElementById('users-link');
-    const websitesLink = document.getElementById('websites-link');
-    if (usersLink) usersLink.classList.remove('active');
-    if (websitesLink) websitesLink.classList.add('active');
+    // const usersLink = document.getElementById('users-link');
+    // const websitesLink = document.getElementById('websites-link');
+    // if (usersLink) usersLink.classList.remove('active');
+    // if (websitesLink) websitesLink.classList.add('active');
+    const tagData = document.getElementById('tag-data');
+    const userData = document.getElementById('user-data');
+    const websiteData = document.getElementById('website-data');
+
+    if (tagData) tagData.style.display = 'none';
+    if (userData) userData.style.display = 'none';
+    if (websiteData) websiteData.style.display = 'block';
 
 
     document.getElementById('website-list-container').innerHTML = '<p class="loading-message">Loading websites...</p>';
@@ -136,6 +143,42 @@ if (addWebsiteForm) {
 }
 
 
+// Function to fetch and populate tags in the edit modal
+async function fetchAndPopulateTags(websiteId) {
+    const tagsSelect = document.getElementById('edit_website_tags');
+    
+    try {
+        // Fetch all available tags
+        const tagsResponse = await fetch('/admin/tag/list');
+        const tags = await tagsResponse.json();
+        
+        // Fetch tags already associated with the website (if any)
+        const websiteTagsResponse = await fetch(`/admin/website/${websiteId}/tags`);
+        const websiteTags = await websiteTagsResponse.json();
+        
+        // Clear existing options
+        tagsSelect.innerHTML = '';
+        
+        // Populate the dropdown with tags
+        tags.forEach(tag => {
+            const option = document.createElement('option');
+            option.value = tag.id;
+            option.textContent = tag.name;
+            
+            // Pre-select tags already associated with the website
+            if (websiteTags.some(wt => wt.id === tag.id)) {
+                option.selected = true;
+            }
+            
+            tagsSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Failed to fetch tags:', error);
+    }
+}
+
+
+
 // Edit Website Modal Functions
 let currentEditWebsiteId = null;
 
@@ -151,6 +194,9 @@ function openEditWebsiteModal(websiteId, title, url, description, is_public) {
 
     // Set the value of the is_public select list
     document.getElementById('edit_website_is_public').value = is_public ? 'true' : 'false';
+
+    // Fetch and populate tags
+    fetchAndPopulateTags(websiteId);
 }
 
 function closeEditWebsiteModal() {
